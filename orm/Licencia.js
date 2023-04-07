@@ -1,9 +1,5 @@
-import {Sequelize, DataTypes, Model} from 'sequelize';
-const sequelize = new Sequelize(
-    'abpro5','postgres','1234',{
-        host:'localhost',
-        dialect:'postgres'
-    });
+import {DataTypes, Model} from 'sequelize';
+import { sequelize } from './bd.js';
 
 export class Licencia extends Model{}
 

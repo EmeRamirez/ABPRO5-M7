@@ -1,9 +1,7 @@
-import {Sequelize, DataTypes, Model} from 'sequelize';
-const sequelize = new Sequelize(
-    'abpro5','postgres','1234',{
-        host:'localhost',
-        dialect:'postgres'
-    });
+import {DataTypes, Model} from 'sequelize';
+import { sequelize } from './bd.js';
+
+import { Especialidad } from './Especialidad.js';
 
 export class Medico extends Model{}
 
@@ -24,14 +22,17 @@ Medico.init({
     direccion: {
         type: DataTypes.STRING(60),
         allowNull: true
-    },
-    id_especialidad: {
-        type: DataTypes.INTEGER,
-        allowNull: false
     }
     },
     {
         sequelize,
+        createdAt: false,
+        updatedAt:false,
         tableName: 'medicos'  
     }
 );
+
+Especialidad.hasMany(Medico,{
+    foreignKey: 'id_especialidad'
+});
+Medico.belongsTo(Especialidad,{foreignKey: 'id_especialidad'});

@@ -1,11 +1,11 @@
-import {Sequelize, DataTypes, Model} from 'sequelize';
-const sequelize = new Sequelize(
-    'abpro5','postgres','1234',{
-        host:'localhost',
-        dialect:'postgres'
-    });
+import {DataTypes, Model} from 'sequelize';
+import { sequelize } from './bd.js';
 
 export class Consulta extends Model{}
+
+import { Medico } from './Medico.js';
+import { Paciente } from './Paciente.js';
+import { Licencia } from './Licencia.js';
 
 Consulta.init({
     id_consulta: {
@@ -24,22 +24,39 @@ Consulta.init({
     numerobox: {
         type: DataTypes.INTEGER,
         allowNull: false
-    },
-    id_paciente: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    id_medico: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    id_licencia: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-    },
+    }
     },
     {
         sequelize,
+        createdAt: false,
+        updatedAt:false,
         tableName: 'consultas'  
     }
 );
+
+Medico.hasMany(Consulta,{
+    foreignKey:'id_medico'
+});
+Consulta.belongsTo(Medico,{
+    foreignKey:'id_medico'
+});
+
+Paciente.hasMany(Consulta,{
+    foreignKey:'id_paciente'
+});
+Consulta.belongsTo(Paciente,{
+    foreignKey:'id_paciente'
+});
+
+Licencia.hasMany(Consulta,{
+    foreignKey:{
+        name:'id_licencia',
+        allowNull: true
+    }
+});
+Consulta.belongsTo(Licencia,{
+    foreignKey:{
+        name:'id_licencia',
+        allowNull: true
+    }
+});
